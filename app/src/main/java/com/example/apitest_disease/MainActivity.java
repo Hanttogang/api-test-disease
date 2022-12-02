@@ -19,7 +19,7 @@ public class MainActivity extends Activity {
     EditText edit;
     TextView text;
 
-    String key="sX+6FXImlrlIbU8MqOFRGgXE0iVhxhVraBqBjW27gOMmvTIXNFpzKw6+re0wm7x/aeiM5iyLXODaxuX+V99TQg==";
+    String key="sX%2B6FXImlrlIbU8MqOFRGgXE0iVhxhVraBqBjW27gOMmvTIXNFpzKw6%2Bre0wm7x%2FaeiM5iyLXODaxuX%2BV99TQg%3D%3D";
     //일반 인증키(Encoding)  sX%2B6FXImlrlIbU8MqOFRGgXE0iVhxhVraBqBjW27gOMmvTIXNFpzKw6%2Bre0wm7x%2FaeiM5iyLXODaxuX%2BV99TQg%3D%3D
     //일반 인증키(Decoding)  sX+6FXImlrlIbU8MqOFRGgXE0iVhxhVraBqBjW27gOMmvTIXNFpzKw6+re0wm7x/aeiM5iyLXODaxuX+V99TQg==
 
@@ -73,11 +73,13 @@ public class MainActivity extends Activity {
 
         String str= edit.getText().toString();//EditText에 작성된 Text얻어오기
         //String vcnCd = URLEncoder.encode(str);//한글의 경우 인식이 안되기에 utf-8 방식으로 encoding     //지역 검색 위한 변수
-        String vcnCd = "";
+        String vcnCd = URLEncoder.encode(str);
 
         String queryUrl="http://apis.data.go.kr/1790387/vcninfo/getVcnInfo?ServiceKey="//요청 URL
                 + key + "&vcnCd=" + vcnCd;
 
+        //http://apis.data.go.kr/1790387/vcninfo/getVcnInfo?ServiceKey=sX+6FXImlrlIbU8MqOFRGgXE0iVhxhVraBqBjW27gOMmvTIXNFpzKw6+re0wm7x/aeiM5iyLXODaxuX+V99TQg==&vcnCd=01
+        //sX+6FXImlrlIbU8MqOFRGgXE0iVhxhVraBqBjW27gOMmvTIXNFpzKw6+re0wm7x/aeiM5iyLXODaxuX+V99TQg==
 
         try {
             URL url= new URL(queryUrl);//문자열로 된 요청 url을 URL 객체로 생성.
@@ -103,13 +105,13 @@ public class MainActivity extends Activity {
 
                         if(tag.equals("item")) ;// 첫번째 검색결과
                         else if(tag.equals("title")){
-                            buffer.append("제목 : ");
+                            buffer.append("감염병 : ");
                             xpp.next();
                             buffer.append(xpp.getText());//addr 요소의 TEXT 읽어와서 문자열버퍼에 추가
                             buffer.append("\n"); //줄바꿈 문자 추가
                         }
                         else if(tag.equals("message")){
-                            buffer.append("본문 : ");
+                            buffer.append("설명 : ");
                             xpp.next();
                             buffer.append(xpp.getText());
                             buffer.append("\n");
@@ -132,7 +134,7 @@ public class MainActivity extends Activity {
             }
 
         } catch (Exception e) {
-            buffer.append("hello world");
+            buffer.append(queryUrl);
             // TODO Auto-generated catch blocke.printStackTrace();
         }
 
